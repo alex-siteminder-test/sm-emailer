@@ -1,5 +1,4 @@
-import express from "express";
-import router from "./app";
+import app from "./app";
 
 const PORT = process.env.port || 3000;
 

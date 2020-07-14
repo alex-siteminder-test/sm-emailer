@@ -1,28 +1,51 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-import { inputJsonSchema, InputJson } from "./model";
-import logger from "./logger";
+import { emailDetailsSchema, EmailDetails } from "./model";
+import EmailTransport from "./email/email-transport";
 
-const app = express();
-app.use(bodyParser.json());
+/** Send an error back to the user as a consistently typed JSON payload */
+const sendFailure = (
+  res: express.Response,
+  statusCode: number,
+  message: string,
+  underlyingErrorMessage?: string
+) => {
+  res.status(statusCode).send({
+    status: "Failure",
+    message,
+    underlyingErrorMessage,
+  });
+};
 
-app.post("/send", async (req, res) => {
-  logger.info("In");
-  const validationResult = inputJsonSchema.validate<InputJson>(req.body);
+export default (emailTransport: EmailTransport) => {
+  const app = express();
+  app.use(bodyParser.json());
 
-  if (validationResult.error) {
-    res.status(400).send({
-      message: validationResult.error.message,
-    });
-  } else {
-    const parsedInput = validationResult.value;
+  app.post("/send", async (req, res) => {
+    const validationResult = emailDetailsSchema.validate<EmailDetails>(
+      req.body
+    );
 
-    
+    if (validationResult.error) {
+      sendFailure(res, 400, validationResult.error.message);
+    } else {
+      const parsedInput = validationResult.value;
 
-    // happy path
-    res.status(200).send({ message: "Sent" });
-  }
-});
+      const result = await emailTransport.send(parsedInput);
 
-export default app;
+      if (result.status === "ok") {
+        res.status(200).send({ status: "Success" });
+      } else {
+        sendFailure(
+          res,
+          500,
+          "The email transport failed to send the email message",
+          result.errorMessage
+        );
+      }
+    }
+  });
+
+  return app;
+};

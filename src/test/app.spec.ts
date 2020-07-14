@@ -2,32 +2,15 @@ import {} from "mocha";
 import express from "express";
 import { mock, when, instance, deepEqual, verify } from "ts-mockito";
 import supertest from "supertest";
+import { expect } from "chai";
 
 import buildApp from "../app";
 import EmailTransport, { Result } from "../email/email-transport";
 import { EmailDetails } from "../model";
-import { expect } from "chai";
-
-const STANDARD_PARAM = {
-  to: [
-    { name: "Alex1", email: "alex.gilleran+1@gmail.com" },
-    { name: "Alex2", email: "alex.gilleran+2@gmail.com" },
-  ],
-  cc: [
-    { name: "Alex3", email: "alex.gilleran+3@gmail.com" },
-    { name: "Alex4", email: "alex.gilleran+4@gmail.com" },
-  ],
-  bcc: [
-    { name: "Alex5", email: "alex.gilleran+5@gmail.com" },
-    { name: "Alex6", email: "alex.gilleran+6@gmail.com" },
-  ],
-  from: { email: "alex@alexgilleran.com" },
-  subject: "Hello subject",
-  content: "Hello content",
-};
+import { STANDARD_PARAM } from "./constants";
 
 class MockedTransport implements EmailTransport {
-  send(input: EmailDetails): Promise<Result> {
+  send(_input: EmailDetails): Promise<Result> {
     throw Error("Deliberately not implemented!");
   }
 }
@@ -62,14 +45,11 @@ describe("API", () => {
         Promise.resolve({ status: "error", errorMessage })
       );
 
-      await supertest(app)
-        .post("/send")
-        .send(STANDARD_PARAM)
-        .expect(500, {
-          status: "Failure",
-          message: "The email transport failed to send the email message",
-          underlyingErrorMessage: errorMessage,
-        });
+      await supertest(app).post("/send").send(STANDARD_PARAM).expect(500, {
+        status: "Failure",
+        message: "The email transport failed to send the email message",
+        underlyingErrorMessage: errorMessage,
+      });
 
       verify(mockedTransport.send(deepEqual(STANDARD_PARAM))).called();
     });

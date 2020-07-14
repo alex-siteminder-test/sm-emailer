@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A simple service that provides a RESTful API for sending emails, abstracting across multiple transport services",
   "scripts": {
-    "test": "ts-mocha \\\"src/test/**/*.spec.ts\\\"",
+    "test": "ts-mocha \\\"src/**/test/**/*.spec.ts\\\"",
     "start": "",
     "dev": "nodemon src/server.ts"
   },

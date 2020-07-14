@@ -5,6 +5,8 @@ import EmailTransport, { Result } from "./email-transport";
 import { EmailDetails, EmailPerson } from "../model";
 import logger from "../logger";
 
+export const MAILGUN_BASE_URI = "https://api.mailgun.net/v3";
+
 interface Config {
   domain: string;
   apiKey: string;
@@ -42,7 +44,7 @@ export default class MailgunEmailTransport implements EmailTransport {
     formData.append("text", input.content);
 
     const res = await fetch(
-      `https://api.mailgun.net/v3/${this.config.domain}/messages`,
+      `${MAILGUN_BASE_URI}/${this.config.domain}/messages`,
       {
         method: "POST",
         body: formData,

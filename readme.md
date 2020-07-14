@@ -13,6 +13,8 @@
 - Subject line should be under 78 characters
 - Max senders (to/cc/bcc) = 50
 - Max content size = 1mb
+- Transport messages are safe to pass through
+- Emails safe to log
 
 # What else
 - Got lucky in that I can reuse the input of the HTTP call as the input for the interface

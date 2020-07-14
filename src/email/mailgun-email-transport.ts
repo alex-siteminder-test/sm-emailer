@@ -7,7 +7,7 @@ import logger from "../logger";
 
 interface Config {
   domain: string;
-  key: string;
+  apiKey: string;
 }
 
 export default class MailgunEmailTransport implements EmailTransport {
@@ -15,18 +15,18 @@ export default class MailgunEmailTransport implements EmailTransport {
     const failIfBlank = (value: string, name: string) => {
       if (!value || value.trim() === "") {
         throw new Error(
-          `Attempted to initialize mailgun with ${name} ${value}`
+          `Attempted to initialize mailgun with blank or undefined ${name}`
         );
       }
     };
 
     failIfBlank(config.domain, "domain");
-    failIfBlank(config.key, "key");
+    failIfBlank(config.apiKey, "apiKey");
   }
 
-  private authHeader = `Basic ${Buffer.from(`api:${this.config.key}`).toString(
-    "base64"
-  )}`;
+  private authHeader = `Basic ${Buffer.from(
+    `api:${this.config.apiKey}`
+  ).toString("base64")}`;
 
   async send(input: EmailDetails): Promise<Result> {
     logger.debug("Attempting to send via Mailgun: %o", input);

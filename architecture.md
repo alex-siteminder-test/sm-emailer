@@ -15,7 +15,7 @@ I decided to make the call to `send` in these transports return a value that cou
 - The logic around what email transports are used, and the order in which they're called, is specified in the code rather than configuration. If this was going to go live this was my next step, but without any domain knowledge around how likely we'd be to change this around, I decided to leave it as a future improvement.
 - A big constraint is that email is asynchronous, and email sending can fail _after_ being accepted by Mailgun or Sendgrid. The longer-term solution to this would be to return an id for the email and allow it to be checked on later (presumably by keeping a database that maps from our ids to sendgrid or mailgun's ids, and having an API that facilitates the lookup). Obviously this would make the architecture a _lot_ more complicated so I left it as a future story!
 - The server has to be up all the time - there's no scale-to-zero like with a serverless solution. I thought about going serverless but thought this was a more relevant demonstration, given that siteminder uses express.
-- If this turns out to be popular, there's a chance we'll run into `429` from Mailgun or Sendgrid because we're calling them too often - in that case rather than simply failover on each call 
+- If this turns out to be popular, there's a chance we'll run into `429` from Mailgun or Sendgrid because we're calling them too often - in that case rather than simply failover on each call, we'd need something more akin to a load balancer that kept track of requests coming in vs the amount that we're allowed to make, and balanced between them.
 
 ## Resiliency to Data Loss
 

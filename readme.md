@@ -1,6 +1,6 @@
 # Email Sender
 
-This is a simple node API that takes in email and abstracts across Mailgun and Sendgrid - if one fails, it'll use the other one.
+This is a simple node API that takes in the details of an email to send as JSON and sends it via either Sendgrid or Mailgun - if one is down, it will retry using the other one.
 
 ## Developing
 

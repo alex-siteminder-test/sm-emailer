@@ -19,10 +19,10 @@ const emailTransport = new FailoverEmailTransport([
 
 const app = buildApp(emailTransport);
 
-const PORT = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 
-const server = app.listen(PORT, () => {
-  logger.info("App is running on port %d", PORT);
+const server = app.listen(port, () => {
+  logger.info("App is running on port %d", port);
 });
 
 export default server;

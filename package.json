@@ -5,8 +5,9 @@
   "description": "A simple service that provides a RESTful API for sending emails, abstracting across multiple transport services",
   "scripts": {
     "test": "ts-mocha \\\"src/**/test/**/*.spec.ts\\\"",
-    "start": "",
-    "dev": "nodemon src/server.ts"
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc"
   },
   "author": "A. Nonymous",
   "license": "MIT",

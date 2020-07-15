@@ -81,7 +81,7 @@ I've also included a Postman file in `postman.json` in the root to make things a
 - Subject line should be under 78 characters
 - Max senders (to/cc/bcc) = 50
 - Max content size = 1mb
-- Error messages from mailgun/sendgrid are safe to pass back to the user - I'm usually hesitant to directly pass any error message back to the user for fear that it would reveal exploitable implementation details to an attacker, but I think sendgrid/mailgun's messages are very likely to be safe.
+- Error messages from mailgun/sendgrid are safe to pass back to the user - I'm usually hesitant to blindly pass any error message back to the user for fear that it would reveal exploitable implementation details to an attacker, but I think sendgrid/mailgun's messages are very likely to be safe.
 - Email contents are safe to log - if this server was being used for automatic system messages then it's fine, if it is supposed to be used for individual's private messages we'd need to be more careful.
 
 ## What I didn't get to

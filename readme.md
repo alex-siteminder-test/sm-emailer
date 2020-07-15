@@ -70,7 +70,49 @@ Accepts a JSON body, an example showing all parameters is below:
 }
 ```
 
+#### Responses
+
+##### 200: Success
+
+Indicates that the email has been sent successfully.
+
+Example response:
+
+```json
+{
+  "status": "Success"
+}
+```
+
+##### 400: Invalid Input
+
+Indicates that something was wrong with the input passed - you can see what went wrong in the `message` part of the response
+
+Example:
+
+```json
+{
+  "status": "Failure",
+  "message": "child \"content\" fails because [\"content\" is required]"
+}
+```
+
+##### 500: Server Error
+
+Something went wrong on the backend.
+
+Example:
+
+```json
+{
+  "status": "Failure",
+  "message": "The email transport failed to send the email message",
+  "underlyingErrorMessage": "Failed to communicate with Sendgrid. Errors were: \"The provided authorization grant is invalid, expired, or revoked\", Domain not found: auto.watchmegrow.car"
+}
+```
+
 ## Demo
+
 There's a deployment already on Heroku at https://alex-siteminder-test.herokuapp.com (add `/send` to use the actual API). Note that my sendgrid account only allows sending from "alex@alexgilleran.com", but because sendgrid is the first transport tried, this is a neat way to test the failover (if you send from any other address, it'll come from mailgun). You can tell where it comes from the email metadata, most easy is "via" if you send to a gmail address.
 
 I've also included a Postman file in `postman.json` in the root to make things a bit easier.
@@ -89,3 +131,4 @@ I've also included a Postman file in `postman.json` in the root to make things a
 - More comprehensive testing for failing over between other combinations of email transports
 - More comprehensive testing for input validation
 - Better messages for validation failed - right now I'm returning what Joi says, which works fine but it's a bit ugly.
+- Having a configurable timeout for Sendgrid/Mailgun. Right now this fails over in the event that Sendgrid/Mailgun are nice enough to send back a 500 or something when they're broken - if they simply drop off the internet then the failover will simply follow the default node-fetch timeout behaviour.

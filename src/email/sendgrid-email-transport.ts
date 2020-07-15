@@ -10,6 +10,9 @@ interface Config {
 
 export const SENDGRID_API_URL = "https://api.sendgrid.com/v3/mail/send";
 
+/**
+ * Email transport that calls the Sendgrid REST API.
+ */
 export default class SendGridEmailTransport implements EmailTransport {
   constructor(private readonly config: Config) {
     if (!config.apiKey || config.apiKey.trim() === "") {

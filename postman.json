@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "47f9ed84-6ff4-4771-86e9-aeffa336f776",
+		"name": "Alex's Siteminder Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"to\": [{\"name\": \"Alex\", \"email\": \"alex.gilleran+1@gmail.com\"}, {\"name\": \"Alex\", \"email\": \"alex.gilleran+2@gmail.com\"}],\n\t\"cc\": [{\"name\": \"Alex\", \"email\": \"alex.gilleran+3@gmail.com\"}, {\"name\": \"Alex\", \"email\": \"alex.gilleran+4@gmail.com\"}],\n\t\"bcc\": [{\"name\": \"Alex\", \"email\": \"alex.gilleran+5@gmail.com\"}, {\"name\": \"Alex\", \"email\": \"alex.gilleran+6@gmail.com\"}],\n\t\"from\": {\"email\": \"alex2@alexgilleran.com\"},\n\t\"subject\": \"Hello subj\",\n\t\"content\": \"Hello desc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://alex-siteminder-test.herokuapp.com/send",
+					"protocol": "https",
+					"host": [
+						"alex-siteminder-test",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"send"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

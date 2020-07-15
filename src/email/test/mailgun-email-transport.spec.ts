@@ -72,6 +72,8 @@ describe("Mailgun Email Transport", () => {
     expect(result.status).to.equal("error");
     expect(result.errorMessage).to.equal("This is a failure message");
   });
+
+  // TODO: It'd probably be good to make sure that errors are getting _logged_ as well
 });
 
 function shouldContainEmailPerson(
@@ -82,6 +84,10 @@ function shouldContainEmailPerson(
   shouldContainValue(body, name, `${emailPerson.name} <${emailPerson.email}>`);
 }
 
+/**
+ * Looks at a formdata body to see whether the provided value is there under
+ * the provided name.
+ */
 function shouldContainValue(body: string, name: string, value: string) {
   expect(body).to.contain(`name="${name}"\r\n\r\n${value}`);
 }

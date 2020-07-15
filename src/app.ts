@@ -19,7 +19,10 @@ const sendFailure = (
   });
 };
 
-export default (emailTransport: EmailTransport) => {
+/**
+ * Builds an express application with the passed email transport.
+ */
+export default function buildApp(emailTransport: EmailTransport) {
   const app = express();
   app.use(bodyParser.json());
 
@@ -35,6 +38,7 @@ export default (emailTransport: EmailTransport) => {
         const parsedInput = validationResult.value;
 
         const result = await emailTransport.send(parsedInput);
+
         if (result.status === "ok") {
           res.status(200).send({ status: "Success" });
         } else {
@@ -53,4 +57,4 @@ export default (emailTransport: EmailTransport) => {
   });
 
   return app;
-};
+}

@@ -1,3 +1,4 @@
+/** Parameter for input into the /send endpoint that has a value for every field */
 export const STANDARD_PARAM = {
   to: [
     { name: "Alex1", email: "alex.gilleran+1@gmail.com" },

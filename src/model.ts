@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+/** Regex that doesn't allow ; or , */
 const NAME_REGEX = /[^;^,]*/;
 
 /** A recipient or sender of an email */

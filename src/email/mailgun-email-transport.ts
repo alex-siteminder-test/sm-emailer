@@ -12,8 +12,12 @@ interface Config {
   apiKey: string;
 }
 
+/**
+ * Email transport that directly calls the Mailgun REST API
+ */
 export default class MailgunEmailTransport implements EmailTransport {
   constructor(private readonly config: Config) {
+    /** Throws an exception if the provided configuration isn't provided */
     const failIfBlank = (value: string, name: string) => {
       if (!value || value.trim() === "") {
         throw new Error(
@@ -72,6 +76,10 @@ export default class MailgunEmailTransport implements EmailTransport {
   }
 }
 
+/**
+ * Takes in an array of EmailPerson and uses emailPersonToString to add
+ * them to the provided formdata in an acceptable format for Mailgun.
+ */
 function addEmailPeopleToFormData(
   key: "to" | "cc" | "bcc",
   formData: FormData,
@@ -84,6 +92,10 @@ function addEmailPeopleToFormData(
   }
 }
 
+/**
+ * Converts an EmailPerson to the email "Name <emailaddress>" format used by
+ * mailgun.
+ */
 function emailPersonToString(emailPerson: EmailPerson): string {
   return emailPerson.name
     ? `${emailPerson.name} <${emailPerson.email}>`

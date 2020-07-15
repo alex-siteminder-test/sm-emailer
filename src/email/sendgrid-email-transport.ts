@@ -8,6 +8,8 @@ interface Config {
   apiKey: string;
 }
 
+export const SENDGRID_API_URL = "https://api.sendgrid.com/v3/mail/send";
+
 export default class SendGridEmailTransport implements EmailTransport {
   constructor(private readonly config: Config) {
     if (!config.apiKey || config.apiKey.trim() === "") {
@@ -20,7 +22,7 @@ export default class SendGridEmailTransport implements EmailTransport {
   async send(input: EmailDetails): Promise<Result> {
     logger.debug("Attempting to send via Sendgrid: %o", input);
 
-    const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    const res = await fetch(SENDGRID_API_URL, {
       method: "POST",
       body: JSON.stringify({
         personalizations: [

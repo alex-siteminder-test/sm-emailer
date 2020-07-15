@@ -1,18 +1,21 @@
 import buildApp from "./app";
 import logger from "./logger";
-import SendGridEmailTransport from "./email/sendgrid-email-transport";
 
-// import FailoverEmailTransport from "./email/failover-email-transport";
-// import MailgunEmailTransport from "./email/mailgun-email-transport";
+import SendgridEmailTransport from "./email/sendgrid-email-transport";
+import FailoverEmailTransport from "./email/failover-email-transport";
+import MailgunEmailTransport from "./email/mailgun-email-transport";
 
-// const emailTransport = new FailoverEmailTransport(); TODO
-// const emailTransport = new MailgunEmailTransport({
-//   domain: process.env.MAILGUN_DOMAIN,
-//   key: process.env.MAILGUN_API_KEY,
-// });
-const emailTransport = new SendGridEmailTransport({
+const mailgunTransport = new MailgunEmailTransport({
+  domain: process.env.MAILGUN_DOMAIN,
+  apiKey: process.env.MAILGUN_API_KEY,
+});
+const sendgridTransport = new SendgridEmailTransport({
   apiKey: process.env.SENDGRID_API_KEY,
 });
+const emailTransport = new FailoverEmailTransport([
+  sendgridTransport,
+  mailgunTransport,
+]);
 
 const app = buildApp(emailTransport);
 

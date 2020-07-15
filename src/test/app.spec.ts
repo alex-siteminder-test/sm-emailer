@@ -5,22 +5,15 @@ import supertest from "supertest";
 import { expect } from "chai";
 
 import buildApp from "../app";
-import EmailTransport, { Result } from "../email/email-transport";
-import { EmailDetails } from "../model";
+import FakeTransport from "./fake-transport";
 import { STANDARD_PARAM } from "./constants";
 
-class MockedTransport implements EmailTransport {
-  send(_input: EmailDetails): Promise<Result> {
-    throw Error("Deliberately not implemented!");
-  }
-}
-
 describe("API", () => {
-  let mockedTransport: MockedTransport;
+  let mockedTransport: FakeTransport;
   let app: express.Application;
 
   beforeEach(() => {
-    mockedTransport = mock(MockedTransport);
+    mockedTransport = mock(FakeTransport);
     app = buildApp(instance(mockedTransport));
   });
 
